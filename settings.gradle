@@ -1,0 +1,7 @@
+include ':app'
+rootProject.name = "Demo"
+include ':network'
+include ':base'
+include ':common'
+include ':webview'
+include ':news'
