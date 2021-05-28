@@ -3,16 +3,14 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.3"
-
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
 
@@ -26,13 +24,20 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    //统一资源前缀,规范资源引用
+    resourcePrefix "web_"
+
+    dataBinding {
+        enabled true
+    }
 }
 
 dependencies {
-
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.2.1'
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    testImplementation rootProject.ext.androidx["junit"]
+    androidTestImplementation rootProject.ext.androidx["androidx.test.ext-junit"]
+    androidTestImplementation rootProject.ext.androidx["androidx.test.espresso:espresso-core"]
+    implementation rootProject.ext.androidx["androidx-appcompat"]
+    implementation rootProject.ext.androidx["android.material"]
+    api project(':library-base')
 }

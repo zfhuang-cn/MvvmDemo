@@ -1,0 +1,17 @@
+<html>
+<body>
+<script>
+    function callAppToast(){
+        ant.takeNativeAction("showToast",{message: "this is a message from html."})
+    }
+
+    function login(){
+        console.log("login");
+        ant.takeNativeActionWithCallback("login",{},function(res){
+            console.log(res);
+        })
+    }
+</script>
+<script src=" "
+</body>
+</html>

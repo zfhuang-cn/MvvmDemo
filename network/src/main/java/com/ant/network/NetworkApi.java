@@ -2,37 +2,40 @@ package com.ant.network;
 
 import com.ant.network.environment.EnvironmentActivity;
 import com.ant.network.environment.IEnvironment;
+import com.blankj.utilcode.util.AppUtils;
 
 import java.util.HashMap;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableTransformer;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public abstract class NetworkApi implements IEnvironment {
 
-    private static INetworkRequiredInfo iNetworkRequiredInfo;
     private static HashMap<String, Retrofit> retrofitHashMap = new HashMap<>();
     private String mBaseUrl;
-    private OkHttpClient mOkHttpClient;
     private static boolean mIsFormal = true;
 
     public NetworkApi() {
         if (mIsFormal) {
-            this.mBaseUrl = getFormal();
+            mBaseUrl = getFormal();
         } else {
-            this.mBaseUrl = getTest();
+            mBaseUrl = getTest();
         }
     }
 
-    public static void init(INetworkRequiredInfo networkRequiredInfo) {
-        iNetworkRequiredInfo = networkRequiredInfo;
-        mIsFormal =
-                EnvironmentActivity.isOfficialEnvironment(networkRequiredInfo.getApplicationContext());
+    public static void init() {
+        mIsFormal = EnvironmentActivity.isOfficialEnvironment();
     }
 
-    protected Retrofit getRetrofit(Class service) {
+    Retrofit getRetrofit(Class service) {
         if (retrofitHashMap.get(mBaseUrl + service.getName()) != null) {
             return retrofitHashMap.get(mBaseUrl + service.getName());
         }
@@ -46,8 +49,25 @@ public abstract class NetworkApi implements IEnvironment {
         return retrofit;
     }
 
-    private OkHttpClient getOKHttpClient() {
-        OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        return builder.build();
+    public <T> T getService(Class<T> service) {
+        return getRetrofit(service).create(service);
+    }
+
+    private static OkHttpClient getOKHttpClient() {
+        OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
+        if (AppUtils.isAppDebug()) {
+            okHttpClientBuilder.addInterceptor(new HttpLoggingInterceptor()
+                    .setLevel(HttpLoggingInterceptor.Level.BODY));
+        }
+        return okHttpClientBuilder.build();
+    }
+
+    public static <T> ObservableTransformer<T, T> applySchedulers(final Observer<T> observer) {
+        return upstream -> {
+            Observable<T> observable = upstream.subscribeOn(Schedulers.io())
+                    .subscribeOn(AndroidSchedulers.mainThread());
+            observable.subscribe(observer);
+            return observable;
+        };
     }
 }

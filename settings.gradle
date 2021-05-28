@@ -1,7 +1,9 @@
 include ':app'
 rootProject.name = "Demo"
 include ':network'
-include ':base'
-include ':common'
+include ':library-base'
+include ':library-common'
 include ':webview'
-include ':news'
+include ':module-news'
+include ':module-main'
+include ':module-user'

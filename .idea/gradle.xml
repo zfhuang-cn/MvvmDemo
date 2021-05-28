@@ -12,10 +12,12 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/base" />
-            <option value="$PROJECT_DIR$/common" />
+            <option value="$PROJECT_DIR$/library-base" />
+            <option value="$PROJECT_DIR$/library-common" />
+            <option value="$PROJECT_DIR$/module-main" />
+            <option value="$PROJECT_DIR$/module-news" />
+            <option value="$PROJECT_DIR$/module-user" />
             <option value="$PROJECT_DIR$/network" />
-            <option value="$PROJECT_DIR$/news" />
             <option value="$PROJECT_DIR$/webview" />
           </set>
         </option>

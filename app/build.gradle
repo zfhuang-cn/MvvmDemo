@@ -3,16 +3,27 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
 
     defaultConfig {
-        applicationId "com.bird.demo"
-        minSdkVersion 24
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        applicationId rootProject.ext.android.applicationId
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.versions.versionCode
+        versionName rootProject.ext.versions.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            //设置支持的SO库架构
+            abiFilters 'arm64-v8a', 'armeabi-v7a'
+        }
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [AROUTER_MODULE_NAME: project.getName()]
+            }
+        }
     }
 
     buildTypes {
@@ -21,6 +32,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -29,23 +41,32 @@ android {
     dataBinding {
         enabled true
     }
+
 //    aspectjx {
 //        exclude 'android.support'
 //    }
 }
 
 dependencies {
+    testImplementation rootProject.ext.androidx["junit"]
+    androidTestImplementation rootProject.ext.androidx["androidx.test.ext-junit"]
+    androidTestImplementation rootProject.ext.androidx["androidx.test.espresso:espresso-core"]
+    //组件中依赖阿里路由编译框架
+    annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
+    annotationProcessor rootProject.ext.dependencies["glide-compiler"]
+    //宿主项目中判断组件是否需要独立运行
+    if (isBuildModule.toBoolean()) {
+        //组件独立运行时，宿主项目直接依赖基础库，避免编译错误
+        implementation project(':library-base')
+    } else {
+        //主业务模块
+        implementation project(':module-main')
+        //首页模块
+        implementation project(':module-news')
+        //用户模块
+        implementation project(':module-user')
+    }
 
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.2.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation 'org.aspectj:aspectjrt:1.9.6'
-    implementation 'com.permissionx.guolindev:permissionx:1.4.0'
-    implementation project(path: ':common')
-
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-
-    implementation project(":base")
+    implementation 'com.google.auto.service:auto-service:1.0-rc5'
+    implementation 'io.github.jeremyliao:live-event-bus-x:1.8.0'
 }
