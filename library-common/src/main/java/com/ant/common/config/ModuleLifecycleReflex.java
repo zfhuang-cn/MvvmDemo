@@ -10,15 +10,20 @@ package com.ant.common.config;
  * @date : 2021/5/28
  */
 public class ModuleLifecycleReflex {
-    /** 基础库 */
+    /**
+     * 基础库
+     */
     private static final String BaseInit = "com.ant.common.CommonModuleInit";
 
-    /** main组件库 */
-    private static final String MainInit =
-            "com.ant.main.MainModuleInit";
+    /**
+     * main组件库
+     */
+    private static final String MainInit = "com.ant.main.MainModuleInit";
 
-    /**用户组件初始化*/
+    /**
+     * 用户组件初始化
+     */
     private static final String UserInit = "com.ant.user.UserModuleInit";
 
-    public static String[] initModuleNames = {BaseInit, UserInit};
+    public static String[] initModuleNames = {BaseInit, MainInit, UserInit};
 }

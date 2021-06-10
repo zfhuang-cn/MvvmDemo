@@ -2,11 +2,10 @@ package com.ant.news.newslist;
 
 import androidx.lifecycle.SavedStateHandle;
 
-import com.ant.core.model.PagingResult;
-import com.ant.core.model.BaseViewModel;
-import com.ant.core.mvvm.ViewStatus;
 import com.ant.core.customview.BaseCustomViewModel;
-import com.orhanobut.logger.Logger;
+import com.ant.core.model.BaseViewModel;
+import com.ant.core.model.PagingResult;
+import com.ant.core.mvvm.ViewStatus;
 
 import java.util.ArrayList;
 import java.util.List;

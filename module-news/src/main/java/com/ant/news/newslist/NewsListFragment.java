@@ -18,12 +18,13 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
+import com.scwang.smart.refresh.footer.ClassicsFooter;
 import com.scwang.smart.refresh.header.ClassicsHeader;
 
 /**
  * 新闻列表
  */
-public class NewsListFragment extends BaseFragment< NewsListViewModel,FragmentNewsListBinding> implements Observer {
+public class NewsListFragment extends BaseFragment<NewsListViewModel, FragmentNewsListBinding> implements Observer {
     public static final String BUNDLE_KEY_PARAM_CHANNEL_CODE = "channel_code";
     public static final String BUNDLE_KEY_PARAM_CHANNEL_NAME = "channel_name";
 
@@ -51,15 +52,13 @@ public class NewsListFragment extends BaseFragment< NewsListViewModel,FragmentNe
         viewDataBinding.listView.setLayoutManager(new LinearLayoutManager(getContext()));
         viewDataBinding.listView.setAdapter(mAdapter);
 
-        viewModel.dataList.observe(this, newsList -> {
+        viewModel.dataList.observe(getViewLifecycleOwner(), list -> {
             viewDataBinding.refreshLayout.finishRefresh();
             viewDataBinding.refreshLayout.finishLoadMore();
-            mAdapter.setData(newsList);
+            mAdapter.setData(list);
         });
 
-        viewDataBinding.refreshLayout.setRefreshHeader(new ClassicsHeader(getContext()));
         viewDataBinding.refreshLayout.setOnRefreshListener(refreshLayout -> viewModel.refresh());
-
         viewDataBinding.refreshLayout.setOnLoadMoreListener(refreshLayout -> viewModel.tryToLoadNextPage());
 
         viewModel.viewStatusLiveData.observe(this, this);
@@ -92,7 +91,7 @@ public class NewsListFragment extends BaseFragment< NewsListViewModel,FragmentNe
                     ToastUtils.showLong(R.string.no_more_data);
                     break;
                 case REFRESH_ERROR:
-                    if (viewModel.dataList.getValue().size() == 0) {
+                    if (viewModel.dataList.getValue().isEmpty()) {
                         mLoadService.showCallback(ErrorCallback.class);
                     } else {
                         ToastUtils.showLong(viewModel.errorMessage.getValue());

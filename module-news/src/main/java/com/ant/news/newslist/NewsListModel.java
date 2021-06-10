@@ -21,15 +21,16 @@ public class NewsListModel extends BaseModel<JuheBaseResponse<NewsListBean>,
 
     private final String mChannelCode;
 
-    public NewsListModel(String channelCode, IBaseModelListener<List<BaseCustomViewModel>> listener) {
+    public NewsListModel(String channelCode,
+                         IBaseModelListener<List<BaseCustomViewModel>> listener) {
         super(true, listener, "news_list_" + channelCode, null, 1);
         this.mChannelCode = channelCode;
     }
 
     @Override
     protected boolean isNeedToUpdate(long cachedTime) {
-        //超过15分钟需要更新缓存
-        return System.currentTimeMillis() - cachedTime > 1000 * 60 * 15;
+        //超过60分钟需要更新缓存
+        return System.currentTimeMillis() - cachedTime > 1000 * 60 * 60;
     }
 
     protected void load() {
@@ -41,19 +42,23 @@ public class NewsListModel extends BaseModel<JuheBaseResponse<NewsListBean>,
 
     @Override
     public void onDataTransform(JuheBaseResponse<NewsListBean> data, boolean isFromCache) {
-        BaseCustomViewModel viewModel;
-        ArrayList<BaseCustomViewModel> viewModels = new ArrayList<>();
-        for (NewsListBean.NewsBean source : data.getResult().data) {
-            if (TextUtils.isEmpty(source.thumbnailPic)) {
-                viewModel = new TitleViewViewModel(source.title, source.date,
-                        source.authorNme, source.url);
-            } else {
-                viewModel = new PictureTitleViewViewModel(source.title,
-                        source.date, source.authorNme, source.thumbnailPic,
-                        source.url);
+        if (data.isSuccessful()) {
+            BaseCustomViewModel viewModel;
+            ArrayList<BaseCustomViewModel> viewModels = new ArrayList<>();
+            for (NewsListBean.NewsBean source : data.getResult().data) {
+                if (TextUtils.isEmpty(source.thumbnailPic)) {
+                    viewModel = new TitleViewViewModel(source.title, source.date,
+                            source.authorNme, source.url);
+                } else {
+                    viewModel = new PictureTitleViewViewModel(source.title,
+                            source.date, source.authorNme, source.thumbnailPic,
+                            source.url);
+                }
+                viewModels.add(viewModel);
             }
-            viewModels.add(viewModel);
+            notifyResultToListener(data, viewModels, isFromCache);
+        } else if (isFromCache) {
+            notifyFailureToListener(data.getReason());
         }
-        notifyResultToListener(data, viewModels, isFromCache);
     }
 }
