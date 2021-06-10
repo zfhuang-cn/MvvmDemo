@@ -1,4 +1,4 @@
-package com.ant.core.mvvm.customview;
+package com.ant.core.customview;
 
 import android.content.Context;
 import android.util.AttributeSet;

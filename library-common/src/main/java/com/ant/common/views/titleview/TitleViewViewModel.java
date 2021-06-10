@@ -1,6 +1,6 @@
 package com.ant.common.views.titleview;
 
-import com.ant.core.mvvm.customview.BaseCustomViewModel;
+import com.ant.core.customview.BaseCustomViewModel;
 
 public class TitleViewViewModel extends BaseCustomViewModel {
     public String title;

@@ -1,12 +1,11 @@
 package com.ant.news.newslist;
 
-
 import androidx.lifecycle.SavedStateHandle;
 
 import com.ant.core.model.PagingResult;
-import com.ant.core.mvvm.BaseViewModel;
+import com.ant.core.model.BaseViewModel;
 import com.ant.core.mvvm.ViewStatus;
-import com.ant.core.mvvm.customview.BaseCustomViewModel;
+import com.ant.core.customview.BaseCustomViewModel;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
@@ -16,16 +15,12 @@ import static com.ant.news.newslist.NewsListFragment.BUNDLE_KEY_PARAM_CHANNEL_CO
 
 public class NewsListViewModel extends BaseViewModel<NewsListModel, List<BaseCustomViewModel>> {
 
-    private static final String TAG = "NewsListViewModel";
-
     public NewsListViewModel(SavedStateHandle savedStateHandle) {
         dataList.setValue(new ArrayList<>());
         model = new NewsListModel(savedStateHandle.get(BUNDLE_KEY_PARAM_CHANNEL_CODE), this);
-        model.load();
     }
 
     public void refresh() {
-        Logger.d(TAG, "refresh() called");
         model.refresh();
     }
 

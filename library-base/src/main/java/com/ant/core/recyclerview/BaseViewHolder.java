@@ -1,12 +1,12 @@
-package com.ant.core.mvvm.recyclerview;
+package com.ant.core.recyclerview;
 
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ant.core.mvvm.customview.BaseCustomViewModel;
-import com.ant.core.mvvm.customview.ICustomView;
+import com.ant.core.customview.BaseCustomViewModel;
+import com.ant.core.customview.ICustomView;
 
 public class BaseViewHolder extends RecyclerView.ViewHolder {
 

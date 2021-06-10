@@ -14,21 +14,18 @@ import androidx.lifecycle.SavedStateViewModelFactory;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.ant.core.BaseApplication;
+import com.ant.core.model.NormalViewModel;
+import com.ant.core.utils.GenericUtil;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-
-public abstract class BaseFragment<DATA_BINDING extends ViewDataBinding,
-        VIEW_MODEL extends ViewModel> extends Fragment {
+public abstract class BaseFragment<VIEW_MODEL extends ViewModel, DATA_BINDING extends ViewDataBinding> extends Fragment {
 
     protected DATA_BINDING viewDataBinding;
     protected VIEW_MODEL viewModel;
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         viewDataBinding = DataBindingUtil.inflate(inflater, layoutId(), container, false);
         createViewModel();
         init();
@@ -36,21 +33,17 @@ public abstract class BaseFragment<DATA_BINDING extends ViewDataBinding,
     }
 
     protected void createViewModel() {
-        Class modelClass = null;
-        Type type = getClass().getGenericSuperclass();
-        if (type instanceof ParameterizedType) {
-            Type[] cls = ((ParameterizedType) type).getActualTypeArguments();
-            if (cls.length == 2) {
-                modelClass = (Class) cls[1];
-            }
-        }
+        Class modelClass = (Class) GenericUtil.getGenericType(this);
         if (modelClass == null) {
             //如果没有指定泛型参数，则默认使用NormalViewModel
             modelClass = NormalViewModel.class;
         }
         viewModel = (VIEW_MODEL) new ViewModelProvider(getActivity(),
-                new SavedStateViewModelFactory(getActivity().getApplication(), this, getArguments()))
-                .get(modelClass);
+                new SavedStateViewModelFactory(getActivity().getApplication(), this, getArguments())).get(getViewModelKey(), modelClass);
+    }
+
+    protected String getViewModelKey() {
+        return this.getClass().getCanonicalName()+".ViewModel";
     }
 
     protected abstract int layoutId();

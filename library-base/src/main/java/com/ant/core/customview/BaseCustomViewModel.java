@@ -1,4 +1,4 @@
-package com.ant.core.mvvm.customview;
+package com.ant.core.customview;
 
 import java.io.Serializable;
 

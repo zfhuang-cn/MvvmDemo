@@ -5,7 +5,7 @@ import android.view.View;
 
 import com.ant.common.R;
 import com.ant.common.databinding.TitleViewBinding;
-import com.ant.core.mvvm.customview.BaseCustomView;
+import com.ant.core.customview.BaseCustomView;
 
 public class TitleView extends BaseCustomView<TitleViewBinding, TitleViewViewModel> {
 

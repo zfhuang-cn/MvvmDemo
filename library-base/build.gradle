@@ -30,8 +30,8 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    dataBinding {
-        enabled true
+    buildFeatures {
+        dataBinding = true
     }
 }
 
@@ -52,4 +52,6 @@ dependencies {
     api rootProject.ext.dependencies["BaseRecyclerViewAdapterHelper"]
     api rootProject.ext.dependencies["immersionbar"]
     api rootProject.ext.dependencies["glide"]
+    api rootProject.ext.dependencies["utils"]
+
 }

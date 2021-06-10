@@ -1,78 +1,145 @@
 package com.ant.core.model;
 
-import com.ant.core.utils.GsonUtils;
+import android.text.TextUtils;
 
-import java.lang.reflect.Type;
+import com.ant.core.utils.GenericUtil;
+import com.blankj.utilcode.util.GsonUtils;
+
+import java.util.List;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
 /**
- * 应用模块: model
+ * 应用模块: base
  * <p>
  * 类描述: 基类抽象model
  * <p>
  */
-public abstract class BaseModel<DATA> {
+public abstract class BaseModel<NETWORK_DATA, RESULT_DATA> implements NetworkDataTransformer<NETWORK_DATA>  {
 
-    protected CompositeDisposable compositeDisposable;
-    protected IBaseModelListener<DATA> iBaseModelListener;
+    private CompositeDisposable compositeDisposable;
+    private IBaseModelListener<RESULT_DATA> iBaseModelListener;
+    private final int INIT_PAGE_NUMBER;
+    private boolean mIsPaging;
+    private boolean mIsLoading;
+    private String mCachedKey;
+    private String mPredefinedData;
+    protected int pageNumber = 1;
 
-    public BaseModel(IBaseModelListener<DATA> iBaseModelListener) {
+    public BaseModel(boolean isPaging, IBaseModelListener<RESULT_DATA> iBaseModelListener,
+                     String cachedKey, String predefinedData, int... initPageNumber) {
+        this.mIsPaging = isPaging;
         this.iBaseModelListener = iBaseModelListener;
+        this.mCachedKey = cachedKey;
+        this.mPredefinedData = predefinedData;
+        if (initPageNumber != null && initPageNumber.length == 1) {
+            INIT_PAGE_NUMBER = initPageNumber[0];
+        } else {
+            INIT_PAGE_NUMBER = -1;
+        }
         compositeDisposable = new CompositeDisposable();
     }
 
-    /**
-     * 获取缓存数据并加载网络数据
-     */
-    public void getCacheDataAndLoad() {
-        // 如果有apk内置数据,加载内置数据
-        if (null != getApkCache()) {
-            notifyCacheData((DATA) GsonUtils.fromLocalJson(getApkCache(), getDataClass()));
-            if (isNeedToUpData()) {
-                load();
+    protected boolean isNeedToUpdate(long cachedTime) {
+        //超过1分钟需要更新缓存
+        return System.currentTimeMillis() - cachedTime > 1000 * 60;
+    }
+
+    public void refresh() {
+        if (!mIsLoading) {
+            mIsLoading = true;
+            if (mIsPaging) {
+                pageNumber = INIT_PAGE_NUMBER;
             }
-            return;
+            if (mCachedKey != null) {
+                CacheData cacheData = CacheData.getCacheData(mCachedKey);
+                if (cacheData != null) {
+                    NETWORK_DATA savedData = GsonUtils.fromJson(cacheData.getNetworkDataString(),
+                            GenericUtil.getGenericType(this));
+                    if (savedData != null) {
+                        onDataTransform(savedData, true);
+                    }
+                    if (isNeedToUpdate(cacheData.updateTimeInMillis)) {
+                        return;
+                    }
+                } else if (!TextUtils.isEmpty(mPredefinedData)) {
+                    NETWORK_DATA savedData = GsonUtils.fromJson(mPredefinedData,
+                            GenericUtil.getGenericType(this));
+                    if (savedData != null) {
+                        onDataTransform(savedData, true);
+                    }
+                }
+            }
+            load();
         }
-
-        // 没有缓存数据,直接加载网络数据
-        load();
     }
 
-    /**
-     * 该model的数据是否有apk预制的数据,如果有请返回
-     */
-    protected String getApkCache() {
-        return null;
+    public void loadNextPage() {
+        if (!mIsLoading) {
+            mIsLoading = true;
+            load();
+        }
     }
 
-    /**
-     * 是否需要更新数据,默认每一次都需要更新
-     *
-     * @return true
-     */
-    protected boolean isNeedToUpData() {
-        return true;
+    protected boolean isRefresh() {
+        return pageNumber == INIT_PAGE_NUMBER;
     }
-
-    /**
-     * 需要缓存的数据类型
-     */
-    protected Type getDataClass() {
-        return null;
-    }
-
-
-    /**
-     * 加载缓存数据
-     */
-    protected abstract void notifyCacheData(DATA data);
 
     /**
      * 加载网络数据
      */
     protected abstract void load();
+
+    protected void notifyResultToListener(NETWORK_DATA networkData, RESULT_DATA resultData,
+                                          boolean isFromCache) {
+        if (iBaseModelListener != null) {
+            if (mIsPaging) {
+                boolean isEmpty;
+                if (resultData instanceof List) {
+                    isEmpty = ((List) resultData).isEmpty();
+                } else {
+                    isEmpty = resultData == null;
+                }
+                iBaseModelListener.onLoadFinish(resultData, new PagingResult(isEmpty, isRefresh(), !isEmpty));
+
+                if (!isEmpty) {
+                    pageNumber++;
+                }
+            } else if (isFromCache || !CacheData.isSameAsCached(mCachedKey, resultData)) {
+                iBaseModelListener.onLoadFinish(resultData);
+            }
+            //save resultData to preference
+            if (!isFromCache) {
+                if (mIsPaging) {
+                    if (mCachedKey != null && pageNumber == INIT_PAGE_NUMBER) {
+                        CacheData.saveDataToCache(mCachedKey, networkData, resultData);
+                    }
+                } else {
+                    if (mCachedKey != null) {
+                        CacheData.saveDataToCache(mCachedKey, networkData, resultData);
+                    }
+                }
+            }
+        }
+        mIsLoading = false;
+    }
+
+    protected void notifyFailureToListener(String errorMessage) {
+        if (iBaseModelListener != null) {
+            if (mIsPaging) {
+                iBaseModelListener.onLoadFail(errorMessage, new PagingResult(true, isRefresh(),false));
+            } else {
+                iBaseModelListener.onLoadFail(errorMessage);
+            }
+        }
+        mIsLoading = false;
+    }
+
+    @Override
+    public void onFailure(Throwable e) {
+        notifyFailureToListener(e.getMessage());
+    }
 
     /**
      * 订阅对象管理

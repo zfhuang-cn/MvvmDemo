@@ -7,7 +7,7 @@ import android.os.Handler;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.ant.common.router.RouterActivityPath;
-import com.bird.main.R;
+import com.ant.main.R;
 
 /**
  * 应用模块: 主业务模块

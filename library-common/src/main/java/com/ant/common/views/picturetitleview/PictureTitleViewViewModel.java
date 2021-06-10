@@ -1,6 +1,6 @@
 package com.ant.common.views.picturetitleview;
 
-import com.ant.core.mvvm.customview.BaseCustomViewModel;
+import com.ant.core.customview.BaseCustomViewModel;
 
 public class PictureTitleViewViewModel extends BaseCustomViewModel {
     public String title;

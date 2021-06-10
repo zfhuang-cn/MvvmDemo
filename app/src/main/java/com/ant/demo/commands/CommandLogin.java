@@ -6,12 +6,12 @@ import androidx.lifecycle.Observer;
 
 import com.ant.webview.Command;
 import com.ant.webview.ICallbackFromMainProcessToWebViewProcessInterface;
-//import com.google.auto.service.AutoService;
+import com.google.auto.service.AutoService;
 import com.jeremyliao.liveeventbus.LiveEventBus;
 
 import java.util.Map;
 
-//@AutoService({Command.class})
+@AutoService({Command.class})
 public class CommandLogin implements Command, Observer<String> {
 
     private ICallbackFromMainProcessToWebViewProcessInterface callback;
@@ -23,7 +23,7 @@ public class CommandLogin implements Command, Observer<String> {
     }
 
     @Override
-    public void execute(Map parameters,ICallbackFromMainProcessToWebViewProcessInterface callback) {
+    public void execute(Map parameters, ICallbackFromMainProcessToWebViewProcessInterface callback) {
         this.callback = callback;
         this.callbackNameFromNativeToJs = parameters.get("callbackName").toString();
         LiveEventBus.get("login", String.class).observeForever(this);

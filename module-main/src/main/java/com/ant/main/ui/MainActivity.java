@@ -4,9 +4,9 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.ant.common.router.RouterActivityPath;
 import com.ant.common.router.RouterFragmentPath;
 import com.ant.core.mvvm.BaseActivity;
-import com.ant.core.mvvm.NormalViewModel;
-import com.bird.main.R;
-import com.bird.main.databinding.ActivityMainBinding;
+import com.ant.core.model.NormalViewModel;
+import com.ant.main.R;
+import com.ant.main.databinding.ActivityMainBinding;
 import com.blankj.utilcode.util.ColorUtils;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.List;
 import me.majiajie.pagerbottomtabstrip.NavigationController;
 
 @Route(path = RouterActivityPath.Main.PAGER_MAIN)
-public class MainActivity extends BaseActivity<ActivityMainBinding, NormalViewModel> {
+public class MainActivity extends BaseActivity<NormalViewModel,ActivityMainBinding> {
 
     private MainPageAdapter adapter;
 

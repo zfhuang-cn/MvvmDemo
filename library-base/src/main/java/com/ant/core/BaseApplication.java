@@ -15,7 +15,6 @@ public class BaseApplication extends Application {
         sApplication = this;
     }
 
-
     protected void setDebug(boolean isDebug)
     {
         sDebug = isDebug;

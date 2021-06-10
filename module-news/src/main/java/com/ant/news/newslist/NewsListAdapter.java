@@ -8,8 +8,8 @@ import com.ant.common.views.picturetitleview.PictureTitleView;
 import com.ant.common.views.picturetitleview.PictureTitleViewViewModel;
 import com.ant.common.views.titleview.TitleView;
 import com.ant.common.views.titleview.TitleViewViewModel;
-import com.ant.core.mvvm.recyclerview.BaseAdapter;
-import com.ant.core.mvvm.recyclerview.BaseViewHolder;
+import com.ant.core.recyclerview.BaseAdapter;
+import com.ant.core.recyclerview.BaseViewHolder;
 
 public class NewsListAdapter extends BaseAdapter {
     private final int VIEW_TYPE_PICTURE_TITLE = 1;

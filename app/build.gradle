@@ -13,16 +13,13 @@ android {
         versionCode rootProject.ext.versions.versionCode
         versionName rootProject.ext.versions.versionName
 
+        multiDexEnabled true
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         ndk {
             //设置支持的SO库架构
             abiFilters 'arm64-v8a', 'armeabi-v7a'
-        }
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = [AROUTER_MODULE_NAME: project.getName()]
-            }
         }
     }
 
@@ -38,8 +35,8 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    dataBinding {
-        enabled true
+    buildFeatures {
+        dataBinding = true
     }
 
 //    aspectjx {
@@ -51,8 +48,7 @@ dependencies {
     testImplementation rootProject.ext.androidx["junit"]
     androidTestImplementation rootProject.ext.androidx["androidx.test.ext-junit"]
     androidTestImplementation rootProject.ext.androidx["androidx.test.espresso:espresso-core"]
-    //组件中依赖阿里路由编译框架
-    annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
+
     annotationProcessor rootProject.ext.dependencies["glide-compiler"]
     //宿主项目中判断组件是否需要独立运行
     if (isBuildModule.toBoolean()) {
@@ -61,12 +57,13 @@ dependencies {
     } else {
         //主业务模块
         implementation project(':module-main')
-        //首页模块
+        //新闻模块
         implementation project(':module-news')
         //用户模块
         implementation project(':module-user')
     }
 
-    implementation 'com.google.auto.service:auto-service:1.0-rc5'
+    implementation 'com.google.auto.service:auto-service:1.0-rc6'
+    annotationProcessor 'com.google.auto.service:auto-service:1.0-rc6'
     implementation 'io.github.jeremyliao:live-event-bus-x:1.8.0'
 }

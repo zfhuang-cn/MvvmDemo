@@ -1,7 +1,4 @@
-package com.ant.core.mvvm;
-
-import com.ant.core.model.BaseModel;
-import com.ant.core.model.PagingResult;
+package com.ant.core.model;
 
 public class NormalViewModel extends BaseViewModel<BaseModel, String> {
     @Override

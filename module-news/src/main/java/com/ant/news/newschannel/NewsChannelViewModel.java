@@ -1,20 +1,20 @@
-package com.ant.news.homefragment;
+package com.ant.news.newschannel;
 
 import androidx.lifecycle.SavedStateHandle;
 
 import com.ant.core.model.PagingResult;
-import com.ant.core.mvvm.BaseViewModel;
+import com.ant.core.model.BaseViewModel;
 import com.ant.news.api.ChannelBean;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewsHomeViewModel extends BaseViewModel<ChannelsModel, List<ChannelBean>> {
+public class NewsChannelViewModel extends BaseViewModel<ChannelModel, List<ChannelBean>> {
 
-    public NewsHomeViewModel(SavedStateHandle savedStateHandle) {
+    public NewsChannelViewModel(SavedStateHandle savedStateHandle) {
         dataList.setValue(new ArrayList<>());
-        model = new ChannelsModel(this);
-        model.load();
+        model = new ChannelModel(this);
+        model.refresh();
     }
 
     @Override

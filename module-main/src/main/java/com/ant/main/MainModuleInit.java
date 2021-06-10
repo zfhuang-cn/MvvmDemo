@@ -3,7 +3,6 @@ package com.ant.main;
 import com.ant.common.IModuleInit;
 import com.ant.common.JuheNetworkApi;
 import com.ant.core.BaseApplication;
-import com.ant.core.loadsir.CustomCallback;
 import com.ant.core.loadsir.EmptyCallback;
 import com.ant.core.loadsir.ErrorCallback;
 import com.ant.core.loadsir.LoadingCallback;
@@ -29,7 +28,6 @@ public class MainModuleInit implements IModuleInit {
                 .addCallback(new EmptyCallback())
                 .addCallback(new LoadingCallback())
                 .addCallback(new TimeoutCallback())
-                .addCallback(new CustomCallback())
                 .setDefaultCallback(LoadingCallback.class)//设置默认状态页
                 .commit();
         Utils.init(application);

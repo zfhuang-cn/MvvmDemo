@@ -53,8 +53,9 @@ android {
         }
     }
     //开启dataBinding
-    dataBinding{
-        enabled true
+
+    buildFeatures{
+        dataBinding = true
     }
 
     compileOptions {

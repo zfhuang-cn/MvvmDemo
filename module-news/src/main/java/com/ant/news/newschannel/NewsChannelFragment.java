@@ -1,4 +1,4 @@
-package com.ant.news.homefragment;
+package com.ant.news.newschannel;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.ant.common.router.RouterFragmentPath;
@@ -12,7 +12,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
  * 新闻栏目
  */
 @Route(path = RouterFragmentPath.Home.PAGER_HOME)
-public class NewsHomeFragment extends BaseFragment<FragmentNewsHomeBinding, NewsHomeViewModel> {
+public class NewsChannelFragment extends BaseFragment<NewsChannelViewModel,FragmentNewsHomeBinding> {
 
     private NewsChannelAdapter adapter;
 

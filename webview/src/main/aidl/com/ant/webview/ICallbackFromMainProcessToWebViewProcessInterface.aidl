@@ -1,4 +1,3 @@
-// ICallbackFromMainProcessToWebViewProcessInterface.aidl
 package com.ant.webview;
 
 interface ICallbackFromMainProcessToWebViewProcessInterface {

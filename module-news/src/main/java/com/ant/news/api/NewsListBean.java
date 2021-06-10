@@ -1,12 +1,11 @@
 package com.ant.news.api;
 
-import com.ant.common.beans.JuheBaseResponse;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class NewsListBean extends JuheBaseResponse {
+public class NewsListBean {
 
     public class NewsBean {
         private String uniquekey;
@@ -29,12 +28,8 @@ public class NewsListBean extends JuheBaseResponse {
         public String is_content;
     }
 
-    public ResultBean result;
-
-    public class ResultBean {
-        public String stat;
-        public List<NewsBean> data;
-        public String page;
-        public String pageSize;
-    }
+    public String stat;
+    public List<NewsBean> data;
+    public String page;
+    public String pageSize;
 }

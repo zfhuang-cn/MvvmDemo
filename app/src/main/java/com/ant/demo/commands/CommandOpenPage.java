@@ -7,11 +7,11 @@ import android.text.TextUtils;
 import com.ant.core.BaseApplication;
 import com.ant.webview.Command;
 import com.ant.webview.ICallbackFromMainProcessToWebViewProcessInterface;
-//import com.google.auto.service.AutoService;
+import com.google.auto.service.AutoService;
 
 import java.util.Map;
 
-//@AutoService({Command.class})
+@AutoService({Command.class})
 public class CommandOpenPage implements Command {
     @Override
     public String name() {

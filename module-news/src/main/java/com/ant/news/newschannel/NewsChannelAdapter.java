@@ -1,4 +1,4 @@
-package com.ant.news.homefragment;
+package com.ant.news.newschannel;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

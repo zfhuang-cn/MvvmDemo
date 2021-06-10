@@ -1,12 +1,10 @@
-package com.ant.core.mvvm;
+package com.ant.core.model;
 
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
 
-import com.ant.core.model.BaseModel;
-import com.ant.core.model.IBaseModelListener;
+import com.ant.core.mvvm.ViewStatus;
 
 public abstract class BaseViewModel<MODEL extends BaseModel, DATA> extends ViewModel implements LifecycleObserver, IBaseModelListener<DATA> {
 
