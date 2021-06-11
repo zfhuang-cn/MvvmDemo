@@ -1,9 +1,16 @@
 package com.ant.network;
 
+import android.os.Environment;
+
 import com.ant.network.environment.EnvironmentActivity;
 import com.ant.network.environment.IEnvironment;
+import com.ant.network.interceptor.NetworkCacheInterceptor;
 import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.CacheDiskUtils;
+import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.PathUtils;
 
+import java.io.File;
 import java.util.HashMap;
 
 import io.reactivex.Observable;
@@ -11,7 +18,9 @@ import io.reactivex.ObservableTransformer;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.Cache;
 import okhttp3.OkHttpClient;
+import okhttp3.internal.cache.CacheInterceptor;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -59,6 +68,7 @@ public abstract class NetworkApi implements IEnvironment {
             okHttpClientBuilder.addInterceptor(new HttpLoggingInterceptor()
                     .setLevel(HttpLoggingInterceptor.Level.BODY));
         }
+        okHttpClientBuilder.addNetworkInterceptor(new NetworkCacheInterceptor());
         return okHttpClientBuilder.build();
     }
 

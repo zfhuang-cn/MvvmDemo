@@ -27,8 +27,7 @@ public abstract class BaseModel<NETWORK_DATA, RESULT_DATA> implements NetworkDat
     private String mPredefinedData;
     protected int pageNumber = 1;
 
-    public BaseModel(boolean isPaging, IBaseModelListener<RESULT_DATA> iBaseModelListener,
-                     String cachedKey, String predefinedData, int... initPageNumber) {
+    public BaseModel(boolean isPaging, IBaseModelListener<RESULT_DATA> iBaseModelListener, String cachedKey, String predefinedData, int... initPageNumber) {
         this.mIsPaging = isPaging;
         this.iBaseModelListener = iBaseModelListener;
         this.mCachedKey = cachedKey;
@@ -55,8 +54,7 @@ public abstract class BaseModel<NETWORK_DATA, RESULT_DATA> implements NetworkDat
             if (mCachedKey != null) {
                 CacheData cacheData = CacheData.getCacheData(mCachedKey);
                 if (cacheData != null) {
-                    NETWORK_DATA savedData = GsonUtils.fromJson(cacheData.getNetworkDataString(),
-                            GenericUtil.getGenericType(this));
+                    NETWORK_DATA savedData = GsonUtils.fromJson(cacheData.getNetworkDataString(), GenericUtil.getGenericType(this));
                     if (savedData != null) {
                         onDataTransform(savedData, true);
                     }
@@ -64,8 +62,7 @@ public abstract class BaseModel<NETWORK_DATA, RESULT_DATA> implements NetworkDat
                         return;
                     }
                 } else if (!TextUtils.isEmpty(mPredefinedData)) {
-                    NETWORK_DATA savedData = GsonUtils.fromJson(mPredefinedData,
-                            GenericUtil.getGenericType(this));
+                    NETWORK_DATA savedData = GsonUtils.fromJson(mPredefinedData, GenericUtil.getGenericType(this));
                     if (savedData != null) {
                         onDataTransform(savedData, true);
                     }

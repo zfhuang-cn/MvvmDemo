@@ -16,8 +16,7 @@ import com.ant.news.api.NewsListBean;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewsListModel extends BaseModel<JuheBaseResponse<NewsListBean>,
-        List<BaseCustomViewModel>> {
+public class NewsListModel extends BaseModel<JuheBaseResponse<NewsListBean>, List<BaseCustomViewModel>> {
 
     private final String mChannelCode;
 
@@ -50,9 +49,8 @@ public class NewsListModel extends BaseModel<JuheBaseResponse<NewsListBean>,
                     viewModel = new TitleViewViewModel(source.title, source.date,
                             source.authorNme, source.url);
                 } else {
-                    viewModel = new PictureTitleViewViewModel(source.title,
-                            source.date, source.authorNme, source.thumbnailPic,
-                            source.url);
+                    viewModel = new PictureTitleViewViewModel(source.title, source.date,
+                            source.authorNme, source.thumbnailPic, source.url);
                 }
                 viewModels.add(viewModel);
             }
