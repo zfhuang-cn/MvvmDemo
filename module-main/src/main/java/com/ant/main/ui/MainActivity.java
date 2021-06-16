@@ -19,8 +19,6 @@ public class MainActivity extends BaseActivity<NormalViewModel,ActivityMainBindi
 
     private MainPageAdapter adapter;
 
-    private NavigationController mNavigationController;
-
     @Override
     protected int layoutId() {
         return R.layout.activity_main;
@@ -33,7 +31,7 @@ public class MainActivity extends BaseActivity<NormalViewModel,ActivityMainBindi
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.app_name));
 
-        mNavigationController = viewDataBinding.bottomView.material()
+        NavigationController  navigationController = viewDataBinding.bottomView.material()
                 .addItem(R.drawable.tab_bar_home,"首页", ColorUtils.getColor(R.color.main_bottom_check_color))
                 .addItem(R.drawable.tab_bar_crux,"地区", ColorUtils.getColor(R.color.main_bottom_check_color))
                 .addItem(R.drawable.tab_bar_category_ic,"地区", ColorUtils.getColor(R.color.main_bottom_check_color))
@@ -41,11 +39,11 @@ public class MainActivity extends BaseActivity<NormalViewModel,ActivityMainBindi
                 .setDefaultColor(ColorUtils.getColor( R.color.main_bottom_default_color))
                 .enableAnimateLayoutChanges()
                 .build();
-        mNavigationController.setHasMessage(2, true);
+        navigationController.setHasMessage(2, true);
         adapter = new MainPageAdapter(getSupportFragmentManager());
         viewDataBinding.container.setOffscreenPageLimit(1);
         viewDataBinding.container.setAdapter(adapter);
-        mNavigationController.setupWithViewPager(viewDataBinding.container);
+        navigationController.setupWithViewPager(viewDataBinding.container);
 
         initFragmentPath();
     }

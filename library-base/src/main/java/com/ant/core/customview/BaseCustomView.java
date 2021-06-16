@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
@@ -32,7 +33,8 @@ public abstract class BaseCustomView<DATA_BINDING extends ViewDataBinding,
         init();
     }
 
-    public BaseCustomView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public BaseCustomView(@NonNull Context context, @Nullable AttributeSet attrs,
+                          int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
     }
@@ -45,6 +47,7 @@ public abstract class BaseCustomView<DATA_BINDING extends ViewDataBinding,
             dataBinding.getRoot().setOnClickListener(v -> onRootClick(v));
             addView(dataBinding.getRoot());
         }
+        setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
     }
 
     @Override

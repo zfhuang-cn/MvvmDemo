@@ -15,10 +15,6 @@
         android:paddingTop="@dimen/dp_10"
         android:paddingBottom="@dimen/dp_10">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,17 +38,12 @@
 
         </LinearLayout>
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:layout_width="@dimen/picture_width"
+            android:layout_height="@dimen/picture_height"
             android:layout_gravity="end"
-            app:cardCornerRadius="@dimen/d5">
-
-            <ImageView
-                android:layout_width="@dimen/picture_width"
-                android:layout_height="@dimen/picture_height"
-                android:scaleType="fitXY"
-                app:imageUrl="@{viewModel.thumbnailPic}" />
-        </androidx.cardview.widget.CardView>
+            android:scaleType="fitXY"
+            app:cornerRadius="@{@dimen/d5}"
+            app:imageUrl="@{viewModel.thumbnailPic}" />
     </FrameLayout>
 </layout>

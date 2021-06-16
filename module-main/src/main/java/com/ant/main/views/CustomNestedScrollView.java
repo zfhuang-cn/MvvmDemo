@@ -25,10 +25,6 @@ import com.ant.main.utils.FlingHelper;
 public class CustomNestedScrollView extends NestedScrollView implements NestedScrollView.OnScrollChangeListener {
 
     /**
-     * 用于判断NestedScrollView是否fling
-     */
-    private boolean isStartFling;
-    /**
      * 记录当前滑动的y轴加速度
      */
     private int velocityY;
@@ -75,7 +71,6 @@ public class CustomNestedScrollView extends NestedScrollView implements NestedSc
         super.fling(velocityY);
         this.velocityY = velocityY;
         if (velocityY > 0) {
-            isStartFling = true;
             totalDy = 0;
         }
     }
