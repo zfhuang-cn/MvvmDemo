@@ -29,5 +29,6 @@ public class SplashActivity extends AppCompatActivity {
 
     private void startToMain() {
         ARouter.getInstance().build(RouterActivityPath.Main.PAGER_MAIN).navigation();
+        finish();
     }
 }

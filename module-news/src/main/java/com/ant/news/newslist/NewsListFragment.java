@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.SavedStateViewModelFactory;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.ant.core.loadsir.EmptyCallback;
@@ -50,6 +51,7 @@ public class NewsListFragment extends BaseFragment<NewsListViewModel, FragmentNe
         mAdapter = new NewsListAdapter();
         viewDataBinding.listView.setHasFixedSize(true);
         viewDataBinding.listView.setLayoutManager(new LinearLayoutManager(getContext()));
+        viewDataBinding.listView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
         viewDataBinding.listView.setAdapter(mAdapter);
 
         viewModel.dataList.observe(getViewLifecycleOwner(), list -> {
